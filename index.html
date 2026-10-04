@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruta Segura — Guía para tu proceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+
+    --bg:#F8FAFA;
+    --bg-elev:#FFFFFF;
+    --ink:#263238;
+    --ink-soft:#5C6D72;
+    --brand:#245A64;
+    --brand-strong:#163C43;
+    --brand-soft:#E8F3F5;
+    --gold:#D99A32;
+    --border:#D7E2E5;
+    --alert-bg:#F5E4E3;
+    --alert-ink:#B85C5C;
+    --safe-bg:#E7F2EF;
+    --safe-ink:#4F8A78;
+    --warn-bg:#F7ECD9;
+    --warn-ink:#A6761F;
+    --focus:#245A64;
+    --shadow: 0 6px 20px rgba(38,50,56,.08);
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#121C1F;
+      --bg-elev:#1B282C;
+      --ink:#E7EDEE;
+      --ink-soft:#A9BABE;
+      --brand:#6FB6C2;
+      --brand-strong:#9AD2DC;
+      --brand-soft:#1E363B;
+      --gold:#E6B35C;
+      --border:#324347;
+      --alert-bg:#3B2422;
+      --alert-ink:#E08C8C;
+      --safe-bg:#1E332E;
+      --safe-ink:#7FC2AC;
+      --warn-bg:#3A2E1C;
+      --warn-ink:#E6B35C;
+      --focus:#6FB6C2;
+      --shadow: 0 6px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121C1F;
+    --bg-elev:#1B282C;
+    --ink:#E7EDEE;
+    --ink-soft:#A9BABE;
+    --brand:#6FB6C2;
+    --brand-strong:#9AD2DC;
+    --brand-soft:#1E363B;
+    --gold:#E6B35C;
+    --border:#324347;
+    --alert-bg:#3B2422;
+    --alert-ink:#E08C8C;
+    --safe-bg:#1E332E;
+    --safe-ink:#7FC2AC;
+    --warn-bg:#3A2E1C;
+    --warn-ink:#E6B35C;
+    --focus:#6FB6C2;
+  }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight:400;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.25;
+    margin:0 0 .5rem;
+  }
+  p{ margin:0 0 .9rem; color:var(--ink-soft); max-width:64ch; }
+  a{ color:var(--brand); }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg-elev);
+    border-bottom:1px solid var(--border);
+    padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 14px;
+    display:flex; align-items:center; gap:12px;
+  }
+  header .dove{ font-size:26px; line-height:1; flex-shrink:0; }
+  header .titles{ flex:1; min-width:0; }
+  header h1{ font-size:1.15rem; margin:0; font-weight:800; }
+  header .sub{ font-size:.78rem; color:var(--ink-soft); margin-top:1px; }
+  .slot{ display:grid; place-items:center; overflow:hidden; background:var(--brand-soft); border:1px dashed var(--border); color:var(--ink-soft); }
+  .slot::before{ content:"Logo"; font-size:.58rem; font-weight:600; }
+  .slot:has(img){ background:transparent; border-color:transparent; }
+  .slot:has(img)::before{ display:none; }
+  .slot img{ width:100%; height:100%; object-fit:contain; display:block; }
+  header .logo-uni{ width:44px; height:44px; border-radius:50%; flex-shrink:0; }
+
+  /* ---------- emergency strip ---------- */
+  .faq-strip{
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:var(--brand-soft); color:var(--brand-strong);
+    padding:10px 18px; font-size:.86rem; font-weight:700; font-family:inherit; text-align:left;
+    border:none; border-bottom:1px solid var(--border); cursor:pointer;
+  }
+  .faq-strip .arrow{ margin-left:auto; font-size:1.1rem; }
+  .dock{ position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--bg-elev); }
+  .risk-card{ background:var(--warn-bg); border-radius:16px; padding:16px 18px; margin:18px 0 14px; }
+  .risk-card h3{ color:var(--warn-ink); font-size:1.02rem; margin-bottom:2px; }
+  .risk-card p{ color:var(--warn-ink); font-size:.9rem; margin:0 0 12px; }
+  .risk-nums{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .risk-nums a{
+    display:flex; flex-direction:column; justify-content:space-between; gap:6px;
+    background:var(--bg-elev); border-radius:12px; padding:10px; text-decoration:none;
+    color:var(--ink-soft); font-size:.7rem; font-weight:600; line-height:1.25;
+  }
+  .risk-nums a strong{ color:var(--warn-ink); font-size:1.2rem; font-weight:800; }
+
+  /* ---------- layout ---------- */
+  main{
+    padding:22px 18px calc(96px + env(safe-area-inset-bottom,0px));
+    max-width:640px; margin:0 auto;
+  }
+  .view{ display:none; }
+  .view.active{ display:block; animation:fade .25s ease; }
+  @media (prefers-reduced-motion:reduce){ .view.active{ animation:none; } }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .eyebrow{ color:var(--brand); font-weight:700; font-size:.8rem; margin-bottom:6px; }
+  .callout{
+    background:var(--safe-bg); color:var(--safe-ink); border-radius:14px;
+    padding:14px 16px; font-weight:700; font-size:.95rem; margin:18px 0;
+  }
+  .card{
+    background:var(--bg-elev); border:1px solid var(--border); border-radius:16px;
+    padding:16px 18px; margin-bottom:14px;
+  }
+  .card h3{ font-size:1.02rem; }
+
+  /* type grid (violence types) */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+  .tile{
+    background:var(--bg-elev); border:1px solid var(--border); border-radius:14px; padding:14px;
+  }
+  .tile .lbl{ font-weight:700; color:var(--brand-strong); display:block; margin-bottom:4px; }
+  .tile-img{ aspect-ratio:4/3; border-radius:10px; background:var(--brand-soft); border:1px dashed var(--border); margin-bottom:10px; overflow:hidden; }
+  .tile-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .tile p{ font-size:.88rem; margin:0; }
+
+  /* cycle of violence */
+  .cycle-fig{ display:flex; justify-content:center; margin:14px 0 18px; }
+  .cycle-fig svg{ width:100%; max-width:300px; height:auto; }
+  .cy-ring{ fill:none; stroke-width:14; stroke-linecap:round; }
+  .cy-node{ fill:var(--bg-elev); stroke-width:3; }
+  .cy-num{ fill:var(--ink); font-weight:700; font-size:15px; text-anchor:middle; dominant-baseline:central; font-family:inherit; }
+  .cy-lbl{ fill:var(--ink); font-weight:600; font-size:10.5px; text-anchor:middle; font-family:inherit; }
+  .c1{ stroke:var(--gold); } .c1f{ fill:var(--gold); }
+  .c2{ stroke:var(--alert-ink); } .c2f{ fill:var(--alert-ink); }
+  .c3{ stroke:var(--brand); } .c3f{ fill:var(--brand); }
+  .phase{ border-left:5px solid var(--border); }
+  .phase.p1{ border-left-color:var(--gold); }
+  .phase.p2{ border-left-color:var(--alert-ink); }
+  .phase.p3{ border-left-color:var(--brand); }
+  .phase h3{ font-size:1rem; }
+  .phase p{ font-size:.9rem; margin:0; }
+
+  /* FAQ */
+  .faq-cats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+  .faq-cat{
+    background:var(--bg-elev); border:1.5px solid var(--border); border-radius:14px; padding:12px;
+    text-align:left; font-family:inherit; font-weight:600; font-size:.88rem; line-height:1.3;
+    color:var(--ink); cursor:pointer;
+  }
+  .faq-cat.active{ border-color:var(--brand); background:var(--brand-soft); color:var(--brand-strong); }
+  .faq-group{ display:none; }
+  .faq-group.active{ display:block; }
+  details.q{ background:var(--bg-elev); border:1px solid var(--border); border-radius:14px; margin-bottom:10px; }
+  details.q summary{
+    cursor:pointer; padding:14px 16px; font-weight:600; list-style:none;
+    display:flex; gap:12px; justify-content:space-between; align-items:flex-start;
+  }
+  details.q summary::-webkit-details-marker{ display:none; }
+  details.q summary::after{ content:"+"; font-weight:700; color:var(--brand); flex-shrink:0; }
+  details.q[open] summary::after{ content:"–"; }
+  details.q .ans{ padding:0 16px 14px; }
+  details.q .ans p{ font-size:.92rem; margin:0 0 .7rem; max-width:none; }
+  details.q .ans ul{ margin:0 0 .7rem; padding-left:1.1rem; color:var(--ink-soft); font-size:.92rem; }
+  details.q .ans li{ margin-bottom:.5rem; }
+  .share-line{ text-align:center; margin:22px 0 0; max-width:none; }
+  .link-btn{ background:none; border:none; color:var(--brand); font-family:inherit; font-weight:600; font-size:.85rem; text-decoration:underline; cursor:pointer; padding:6px; }
+
+  /* steps (process) */
+  .steps{ list-style:none; margin:18px 0; padding:0; border-left:2px solid var(--border); }
+  .steps li{ position:relative; padding:2px 0 22px 26px; }
+  .steps li:last-child{ padding-bottom:0; }
+  .steps .num{
+    position:absolute; left:-15px; top:0; width:28px; height:28px; border-radius:50%;
+    background:var(--brand); color:#fff; font-weight:800; font-size:.82rem;
+    display:grid; place-items:center;
+  }
+  .steps h3{ font-size:1rem; margin-bottom:3px; }
+  .steps p{ font-size:.9rem; margin:0; }
+
+  /* institutions */
+  .inst{
+    display:flex; gap:12px; align-items:flex-start;
+    border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px;
+    background:var(--bg-elev);
+  }
+  .inst .ic{ flex-shrink:0; width:48px; height:48px; border-radius:10px; padding:3px; }
+  .inst h3{ font-size:.98rem; margin-bottom:2px; }
+  .inst p{ font-size:.86rem; margin:0 0 4px; }
+  .inst .tel{ font-weight:800; color:var(--brand-strong); font-size:.86rem; }
+
+  /* quiz */
+  .quiz-intro p{ max-width:none; }
+  .primary-btn{
+    display:inline-block; width:100%; text-align:center;
+    background:var(--brand); color:#fff; border:none; border-radius:14px;
+    padding:15px 18px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:6px;
+  }
+  .ghost-btn{
+    display:inline-block; width:100%; text-align:center;
+    background:transparent; color:var(--brand-strong); border:1.5px solid var(--border); border-radius:14px;
+    padding:13px 18px; font-size:.95rem; font-weight:600; cursor:pointer; margin-top:10px;
+  }
+  .progress-wrap{ display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .progress-track{ flex:1; height:8px; background:var(--border); border-radius:6px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--brand); border-radius:6px; transition:width .3s ease; }
+  .progress-label{ font-size:.78rem; color:var(--ink-soft); white-space:nowrap; }
+  .qtext{ font-size:1.15rem; font-weight:600; margin:8px 0 22px; }
+  .answers{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .ans-btn{
+    padding:20px 10px; border-radius:14px; border:2px solid var(--border);
+    background:var(--bg-elev); color:var(--ink); font-weight:600; font-size:1.05rem; cursor:pointer;
+  }
+  .ans-btn:active{ border-color:var(--brand); }
+  .back-link{ background:none; border:none; color:var(--ink-soft); font-size:.85rem; font-weight:600; cursor:pointer; padding:0; margin-bottom:14px; text-decoration:underline; }
+
+  .result-badge{ display:inline-block; padding:8px 16px; border-radius:999px; font-weight:800; font-size:.95rem; margin-bottom:14px; }
+  .result-badge.alto{ background:var(--alert-bg); color:var(--alert-ink); }
+  .result-badge.leve{ background:var(--safe-bg); color:var(--safe-ink); }
+
+  /* bottom nav */
+  nav.tabs{
+    background:var(--bg-elev); border-top:1px solid var(--border);
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));
+    display:flex; justify-content:space-around;
+  }
+  nav.tabs button{
+    background:none; border:none; color:var(--ink-soft);
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:.68rem; font-weight:600; padding:6px 4px; cursor:pointer; flex:1; border-radius:10px;
+  }
+  nav.tabs button .ic{ font-size:1.25rem; }
+  nav.tabs button.active{ color:var(--brand-strong); background:var(--brand-soft); }
+
+  /* modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(15,20,18,.55); z-index:40;
+    display:none; align-items:center; justify-content:center; padding:24px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    background:var(--bg-elev); border-radius:18px; padding:24px; max-width:340px; width:100%;
+    text-align:center; box-shadow:var(--shadow);
+  }
+  .modal h3{ margin-bottom:10px; }
+  .modal p{ font-size:.88rem; margin:0 auto 16px; }
+  #qrcode{ display:flex; justify-content:center; margin:0 auto 14px; }
+  #qrcode img, #qrcode canvas{ border-radius:10px; }
+
+  footer.note{ text-align:center; font-size:.74rem; color:var(--ink-soft); margin-top:26px; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="dove" aria-hidden="true">🕊️</span>
+  <div class="titles">
+    <h1>Ruta Segura</h1>
+    <div class="sub">Guía informativa para tu proceso</div>
+  </div>
+  <span class="slot logo-uni" aria-hidden="true"><!-- Logo de la universidad: <img src="..." alt="Universidad"> --></span>
+</header>
+
+<button class="faq-strip" onclick="goTo('faq')"><span aria-hidden="true">❓</span><span>Preguntas frecuentes</span><span class="arrow" aria-hidden="true">›</span></button>
+
+<main>
+
+  <!-- INFO -->
+  <section class="view active" id="view-info">
+    <div class="eyebrow">Información</div>
+    <h2>¿Qué es la violencia contra la mujer?</h2>
+    <p>En Guatemala, la Ley contra el Femicidio y otras Formas de Violencia Contra la Mujer (Decreto 22-2008) reconoce como violencia cualquier acción u omisión, basada en su género, que le cause muerte, daño o sufrimiento físico, sexual, psicológico o económico, tanto en el ámbito público como en el privado.</p>
+
+    <div class="callout">Toda mujer tiene derecho a vivir libre de violencia y a recibir orientación y protección.</div>
+
+    <h3 style="margin-top:22px;">Formas en las que puede presentarse</h3>
+    <div class="grid2">
+      <div class="tile">
+        <div class="tile-img"><!-- Para agregar imagen: <img src="..." alt="Física"> --></div>
+        <span class="lbl">Física</span><p>Golpes, empujones, heridas o cualquier agresión al cuerpo.</p>
+      </div>
+      <div class="tile">
+        <div class="tile-img"><!-- Para agregar imagen: <img src="..." alt="Psicológica"> --></div>
+        <span class="lbl">Psicológica</span><p>Amenazas, humillaciones, control, celos o aislamiento.</p>
+      </div>
+      <div class="tile">
+        <div class="tile-img"><!-- Para agregar imagen: <img src="..." alt="Sexual"> --></div>
+        <span class="lbl">Sexual</span><p>Cualquier acto sexual sin su consentimiento.</p>
+      </div>
+      <div class="tile">
+        <div class="tile-img"><!-- Para agregar imagen: <img src="..." alt="Económica"> --></div>
+        <span class="lbl">Económica</span><p>Controlar su dinero, impedirle trabajar o quitarle sus bienes.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:26px;">El ciclo de la violencia</h3>
+    <p>Muchas mujeres reconocen este patrón en su relación. Se presenta en tres fases que suelen repetirse:</p>
+    <div class="cycle-fig">
+      <svg viewBox="36 36 248 248" role="img" aria-label="Ciclo de la violencia en tres fases: tensión, agresión y reconciliación">
+        <path class="cy-ring c1" d="M88.1 90.5 A100 100 0 0 1 218.8 79.1"/>
+        <polygon class="c1f" points="230.5,73.0 215.4,91.6 240.9,101.2"/>
+        <path class="cy-ring c2" d="M256.1 132.4 A100 100 0 0 1 200.7 251.4"/>
+        <polygon class="c2f" points="200.1,264.6 191.5,242.2 170.5,259.5"/>
+        <path class="cy-ring c3" d="M135.8 257.0 A100 100 0 0 1 60.5 149.5"/>
+        <polygon class="c3f" points="49.4,142.5 73.1,146.2 68.6,119.3"/>
+        <circle class="cy-node c1" cx="160" cy="60" r="17"/><text class="cy-num" x="160" y="60">1</text>
+        <circle class="cy-node c2" cx="246.6" cy="210" r="17"/><text class="cy-num" x="246.6" y="210">2</text>
+        <circle class="cy-node c3" cx="73.4" cy="210" r="17"/><text class="cy-num" x="73.4" y="210">3</text>
+        <text class="cy-lbl" x="160" y="112">Tensión</text>
+        <text class="cy-lbl" x="205" y="190">Agresión</text>
+        <text class="cy-lbl" x="115" y="190">Reconciliación</text>
+      </svg>
+    </div>
+    <div class="card phase p1">
+      <h3>Fase 1 · Acumulación de tensión</h3>
+      <p>Tu pareja se muestra irritable y tenso sin una razón clara. Te humilla, se burla de ti o te ridiculiza. Sientes miedo e inseguridad, intentas calmar la situación y evitas lo que crees que le molesta, con la esperanza de que pase y de que cambie.</p>
+    </div>
+    <div class="card phase p2">
+      <h3>Fase 2 · Agresión</h3>
+      <p>Se rompe el diálogo y el entendimiento. Tu pareja descarga su enojo con golpes, empujones, pellizcos o palabras ofensivas; puede negarte el dinero para la comida u obligarte a tener relaciones sexuales.</p>
+    </div>
+    <div class="card phase p3">
+      <h3>Fase 3 · Reconciliación</h3>
+      <p>Pasado un tiempo, tu pareja se muestra cariñosa, te pide perdón, demuestra su arrepentimiento y te compensa de distintas formas; promete que no volverá a ocurrir y que va a cambiar. Sientes pena y a veces culpa, pero te ilusiona retomar la relación.</p>
+    </div>
+
+    <div class="risk-card" role="note">
+      <h3>Números de Emergencia</h3>
+      <p>Si tu vida está en peligro, llama de inmediato:</p>
+      <div class="risk-nums">
+        <a href="tel:110"><span>PNC</span><strong>110</strong></a>
+        <a href="tel:1572"><span>Ministerio Público<br>atención a víctimas</span><strong>1572</strong></a>
+        <a href="tel:123"><span>Bomberos Municipales</span><strong>123</strong></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="view" id="view-proceso">
+    <div class="eyebrow">Su proceso</div>
+    <h2>Su proceso, paso a paso</h2>
+    <p>Esta es una guía general del proceso. Cada caso es distinto: el personal del juzgado le explicará los detalles específicos de su situación.</p>
+
+    <ol class="steps">
+      <li><span class="num">1</span><h3>Juzgado de Paz</h3><p><strong>Solicitud de medidas de seguridad.</strong> Es el primer paso: cuentas tu situación al personal del juzgado y solicitas que se te proteja. Si temes que tus hijas o hijos estén en riesgo, menciónalo para que puedan incluirse en la solicitud.</p></li>
+      <li><span class="num">2</span><h3>Medidas de seguridad</h3><p><strong>Se brinda protección y orientación.</strong> El juez o jueza puede ordenar medidas para prevenir nuevas agresiones, por ejemplo que el agresor no se acerque a ti. También recibes orientación sobre los pasos que siguen. Estas medidas protegen, pero no significan que el agresor ya fue condenado.</p></li>
+      <li><span class="num">3</span><h3>Agencia Fiscal del Ministerio Público</h3><p><strong>Investigación inicial del posible delito.</strong> Tu denuncia llega a la Agencia Fiscal del Ministerio Público de San Raymundo, que inicia la investigación para determinar si hubo un delito y te cita para entrevistarte.</p></li>
+      <li><span class="num">4</span><h3>Diligencias de investigación</h3><p><strong>Según cada caso: evaluación del INACIF, médico forense y psicólogo forense.</strong> Se realizan diligencias para reunir información y evidencia. Entre ellas, el INACIF puede evaluarte con un médico forense y un psicólogo forense.</p></li>
+      <li><span class="num">5</span><h3>Fiscalía de la Mujer</h3><p><strong>Seguimiento más a fondo de la investigación.</strong> El caso pasa a la Fiscalía de la Mujer del Ministerio Público en San Juan Sacatepéquez, que continúa la investigación con entrevistas, informes y búsqueda de evidencia.</p></li>
+      <li><span class="num">6</span><h3>Audiencias judiciales</h3><p>El fiscal presenta los hechos ante el juez o jueza. En las audiencias se decide, por ejemplo, si la persona sindicada queda en prisión preventiva o con medidas sustitutivas, y más adelante si se abre el juicio.</p></li>
+      <li><span class="num">7</span><h3>Resolución o sentencia</h3><p>El juez o jueza dicta sentencia: condenatoria (la persona es culpable del delito) o absolutoria (la persona es inocente de lo que se le acusa). Las partes tienen un plazo legal para apelar; si no lo hacen, la sentencia queda firme.</p></li>
+    </ol>
+  </section>
+
+  <!-- INSTITUCIONES -->
+  <section class="view" id="view-instituciones">
+    <div class="eyebrow">Instituciones</div>
+    <h2>Instituciones que pueden ayudarte</h2>
+    <p>Conoce las instituciones que pueden orientarte, protegerte y acompañarte durante el proceso.</p>
+
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Organismo Judicial"> --></span><div><h3>Juzgado de Paz</h3><p>Dicta las medidas de protección y resuelve el proceso.</p><span class="tel">2415-3400 / 2290-4444</span></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Ministerio Público"> --></span><div><h3>Ministerio Público — Fiscalía de la Mujer</h3><p>Investiga el delito denunciado.</p><span class="tel">1572</span></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Policía Nacional Civil"> --></span><div><h3>Policía Nacional Civil (PNC)</h3><p>Recibe denuncias y brinda protección inmediata.</p><span class="tel">110</span></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Instituto de la Defensa Pública Penal"> --></span><div><h3>Instituto de la Defensa Pública Penal</h3><p>Asesoría legal gratuita para la víctima.</p><span class="tel">1571</span></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="INACIF"> --></span><div><h3>INACIF</h3><p>Realiza evaluaciones médicas y psicológicas.</p></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Procuraduría de los Derechos Humanos"> --></span><div><h3>PDH — Defensoría de la Mujer</h3><p>Vigila el respeto de sus derechos.</p><span class="tel">1555</span></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Procuraduría General de la Nación"> --></span><div><h3>PGN</h3><p>Interviene si hay niñas, niños o adolescentes involucrados.</p></div></div>
+    <div class="inst"><span class="ic slot"><!-- Logo: <img src="..." alt="Defensoría de la Mujer Indígena"> --></span><div><h3>DEMI</h3><p>Atención a mujeres indígenas en mam, k'iche', q'eqchi' y kaqchikel.</p><span class="tel">1529</span></div></div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section class="view" id="view-faq">
+    <button class="back-link" onclick="goTo('info')">← Volver</button>
+    <div class="eyebrow">Preguntas frecuentes</div>
+    <h2>Preguntas frecuentes</h2>
+    <p>Respuestas a dudas comunes sobre la violencia contra la mujer, las medidas de seguridad, la denuncia y el proceso penal.</p>
+
+    <div class="faq-cats">
+      <button class="faq-cat active" onclick="showFaq(0)">Violencia contra la mujer</button>
+      <button class="faq-cat" onclick="showFaq(1)">Medidas de seguridad</button>
+      <button class="faq-cat" onclick="showFaq(2)">La denuncia</button>
+      <button class="faq-cat" onclick="showFaq(3)">El proceso penal</button>
+    </div>
+
+    <div class="faq-group active">
+      <details class="q"><summary>¿Puedo salir de mi casa sin que mi esposo me acuse de abandono de hogar?</summary><div class="ans"><p>El abandono de hogar ya no se reconoce como causal de divorcio, así que no puede usarse en tu contra cuando hagas valer tus derechos. Por ejemplo, no te impide demandar una pensión alimenticia ni solicitar medidas de seguridad.</p></div></details>
+      <details class="q"><summary>Si denuncio a mi agresor, ¿debe seguir pagando la pensión alimenticia?</summary><div class="ans"><p>Sí. La pensión alimenticia es una obligación, no un favor, y es un derecho de las niñas y los niños aunque denuncies la violencia. El monto y la forma de pago pueden acordarse entre ambos y los fija un juez o jueza.</p><p>Si no cumple con el pago, puedes iniciar un juicio ejecutivo ante un juzgado penal para exigirlo.</p></div></details>
+      <details class="q"><summary>¿Qué pasará con mis hijas e hijos?</summary><div class="ans"><p>Si sales de tu casa por una situación de violencia, se aconseja llevarte a tus hijas e hijos. Al denunciar, es importante mencionar si ellos también son víctimas.</p><p>Si solicitas medidas de seguridad para que tu agresor no se acerque a ti, puedes incluirlos si temes que les haga daño.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué son las medidas de seguridad?</summary><div class="ans"><p>Son medidas que ordena una autoridad judicial para proteger a una persona que vive violencia o está en riesgo. Buscan prevenir nuevas agresiones y proteger su vida, integridad y seguridad.</p></div></details>
+      <details class="q"><summary>¿Las medidas de seguridad significan que el agresor ya fue condenado?</summary><div class="ans"><p>No. Son preventivas y de protección. Que se otorguen no significa que exista una sentencia condenatoria contra la persona señalada como agresora.</p></div></details>
+      <details class="q"><summary>¿Las medidas de seguridad sustituyen la denuncia penal?</summary><div class="ans"><p>No necesariamente. Protegen, pero no reemplazan el proceso penal cuando los hechos pueden constituir un delito. Por eso es importante recibir orientación sobre los pasos que siguen después de obtener protección.</p></div></details>
+      <details class="q"><summary>¿Qué debo hacer después de recibir las medidas de seguridad?</summary><div class="ans"><p>Infórmate sobre los pasos para continuar el procedimiento por los hechos denunciados, sobre todo cuando puedan constituir un delito. Es necesario acudir al Ministerio Público para que continúe la investigación.</p></div></details>
+      <details class="q"><summary>¿Qué pasa si el agresor no respeta las medidas de seguridad?</summary><div class="ans"><p>Avisa de inmediato a la autoridad correspondiente y pide auxilio, especialmente si estás en peligro. Incumplir una medida puede tener consecuencias legales.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué significa poner una denuncia?</summary><div class="ans"><p>Es contar, de forma oral o escrita, a la policía, al Ministerio Público o a un juzgado, que se cometió un delito del que se tiene conocimiento. A partir de ahí se investiga según el tipo de caso, con el fin de apoyar a la víctima e identificar al agresor.</p></div></details>
+      <details class="q"><summary>¿Puedo retirar mi denuncia?</summary><div class="ans"><p>Depende de la naturaleza del delito. En casos de violación sexual o agresiones físicas, aunque retires la denuncia, el Ministerio Público tiene la obligación legal de continuar la persecución penal.</p><p>En casos de extorsiones o robos, la denuncia puede hacerse por teléfono o en línea, y la persona puede decidir no continuar con el proceso en el MP.</p></div></details>
+      <details class="q"><summary>¿Tiene algún costo?</summary><div class="ans"><p>No. Poner una denuncia no tiene ningún costo.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué pasa después de solicitar mis medidas?</summary><div class="ans">
+        <p>Después de solicitar tus medidas de seguridad en este juzgado, el camino suele ser el siguiente (los tiempos varían según cada caso):</p>
+        <ul>
+          <li><strong>Agencia Fiscal de San Raymundo.</strong> Tu denuncia llega a la Agencia Fiscal del Ministerio Público del municipio de San Raymundo, que inicia la investigación: te cita para entrevistarte y realiza otras diligencias.</li>
+          <li><strong>Fiscalía de la Mujer.</strong> Luego pasa a la Fiscalía de la Mujer del MP en San Juan Sacatepéquez, que realiza entrevistas, solicita informes y busca evidencia para determinar si existe un delito. La investigación avanza más rápido cuando el agresor ya está identificado.</li>
+          <li><strong>Audiencia ante el juez.</strong> El o la fiscal presenta al juez o jueza los hechos que se imputan, y se decide si la persona sindicada queda en prisión preventiva o con medidas sustitutivas (por ejemplo, arresto domiciliario o arraigo) mientras se investiga.</li>
+          <li><strong>Plazo de la investigación.</strong> Es de 3 meses si hay prisión preventiva y de 6 meses si hay arresto domiciliario. Estos plazos pueden cambiar por los recursos que presente la defensa.</li>
+          <li><strong>Etapa intermedia.</strong> Al concluir la investigación, el juez o jueza decide si se abre el juicio oral y público (debate).</li>
+          <li><strong>Juicio y sentencia.</strong> El juez o jueza dicta sentencia: condenatoria (la persona es culpable del delito) o absolutoria (la persona es inocente de lo que se le acusa).</li>
+          <li><strong>Después de la sentencia.</strong> Las partes tienen un plazo legal para apelar. Si no hay apelación dentro de ese plazo, la sentencia queda firme.</li>
+        </ul>
+      </div></details>
+      <details class="q"><summary>¿Qué pasará con el agresor después de la denuncia?</summary><div class="ans"><p>Después de la denuncia, el Ministerio Público debe realizar una investigación. Durante esa etapa pueden solicitarse medidas de seguridad que garanticen tu bienestar si se considera que estás en riesgo.</p><p>Según la gravedad del delito y el riesgo que enfrentes, el juez o jueza puede ordenar la captura del presunto agresor. Mientras el MP investiga, también puede imponer prisión preventiva o arresto domiciliario. Terminada la etapa intermedia, decide si se abre el juicio oral o debate.</p></div></details>
+      <details class="q"><summary>¿Qué significa “reparación digna”?</summary><div class="ans">
+        <p>El Código Procesal Penal reconoce el derecho de la víctima a una reparación digna: restaurar, mediante distintas acciones, el derecho que fue afectado por el delito. Es responsabilidad del Estado y de los agresores brindarla de forma digna y transformadora. Algunos ejemplos:</p>
+        <ul>
+          <li>Recibir tratamiento psicológico y/o médico.</li>
+          <li>Recibir becas de estudio.</li>
+          <li>Pagos a la víctima por parte de la persona condenada.</li>
+          <li>Conmemoraciones públicas por entidades del Estado en casos especiales.</li>
+          <li>Disculpas públicas de la persona condenada.</li>
+          <li>Otras, según las circunstancias del caso.</li>
+        </ul>
+        <p>Cuando la sentencia condenatoria queda firme, el o la fiscal del Ministerio Público debe solicitar al juez o jueza la audiencia de reparación digna dentro del plazo que establece la ley.</p>
+      </div></details>
+    </div>
+
+    <p style="font-size:.82rem; margin-top:18px;">Esta información es general. Para tu caso concreto, consulta al personal del juzgado.</p>
+  </section>
+
+  <!-- CUESTIONARIO -->
+  <section class="view" id="view-cuestionario">
+    <div class="eyebrow">Cuestionario</div>
+    <div id="quizIntro" class="quiz-intro">
+      <h2>Cuestionario de valoración de riesgo</h2>
+      <p>Este cuestionario es una guía orientativa; no sustituye la valoración de un profesional. Sus respuestas son privadas: no se guardan ni se envían a ningún lugar, solo usted las ve en su teléfono.</p>
+      <p>Responda cada pregunta con <strong>Sí</strong> o <strong>No</strong>. Al finalizar, si lo desea, puede compartir el resultado con el personal del juzgado.</p>
+      <button class="primary-btn" onclick="startQuiz()">Comenzar cuestionario</button>
+    </div>
+
+    <div id="quizBody" style="display:none;">
+      <button class="back-link" onclick="prevQuestion()">← Regresar</button>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+      <p class="qtext" id="qtext"></p>
+      <div class="answers">
+        <button class="ans-btn" onclick="answer(true)">Sí</button>
+        <button class="ans-btn" onclick="answer(false)">No</button>
+      </div>
+    </div>
+
+    <div id="quizResult" style="display:none;">
+      <div id="resultBadge" class="result-badge"></div>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <button class="primary-btn" id="resultCta" onclick="goTo('instituciones')">Ver instituciones de ayuda</button>
+      <button class="ghost-btn" onclick="startQuiz()">Volver a realizar el cuestionario</button>
+    </div>
+  </section>
+
+  <p class="share-line"><button class="link-btn" id="shareBtn">Compartir esta guía (código QR)</button></p>
+  <footer class="note">Guía elaborada como material de apoyo (EPS). El equipo del juzgado debe validar y adaptar sus contenidos y criterios antes de un uso oficial.</footer>
+</main>
+
+<div class="dock">
+<nav class="tabs">
+  <button class="tab-btn active" data-view="info" onclick="goTo('info')"><span class="ic">ℹ️</span>Información</button>
+  <button class="tab-btn" data-view="proceso" onclick="goTo('proceso')"><span class="ic">🧭</span>Su proceso</button>
+  <button class="tab-btn" data-view="instituciones" onclick="goTo('instituciones')"><span class="ic">🏛️</span>Instituciones</button>
+  <button class="tab-btn" data-view="cuestionario" onclick="goTo('cuestionario')"><span class="ic">📋</span>Cuestionario</button>
+</nav>
+</div>
+
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <h3>Compartir esta guía</h3>
+    <p>Pida a la persona que escanee este código con la cámara de su teléfono para abrir la guía directamente.</p>
+    <div id="qrcode"></div>
+    <button class="ghost-btn" onclick="copyLink()">Copiar enlace</button>
+    <button class="ghost-btn" onclick="closeShare()">Cerrar</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  function goTo(name){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function showFaq(i){
+    document.querySelectorAll('.faq-cat').forEach(function(b,k){ b.classList.toggle('active', k===i); });
+    document.querySelectorAll('.faq-group').forEach(function(g,k){ g.classList.toggle('active', k===i); });
+  }
+
+  // ---------- share modal / QR ----------
+  var qrRendered = false;
+  document.getElementById('shareBtn').addEventListener('click', function(){
+    document.getElementById('shareModal').classList.add('open');
+    if(!qrRendered){
+      try{
+        new QRCode(document.getElementById('qrcode'), {
+          text: window.location.href,
+          width: 200, height: 200,
+          colorDark: '#245A64', colorLight: '#ffffff'
+        });
+        qrRendered = true;
+      }catch(e){ document.getElementById('qrcode').textContent = 'No se pudo generar el código.'; }
+    }
+  });
+  function closeShare(){ document.getElementById('shareModal').classList.remove('open'); }
+  function copyLink(){
+    try{ navigator.clipboard.writeText(window.location.href); }catch(e){}
+  }
+
+  // ---------- quiz ----------
+  var questions = [
+    {t:"¿Diría que la violencia ha aumentado en frecuencia o gravedad en los últimos meses?", critical:false},
+    {t:"¿La persona agresora la ha amenazado de muerte a usted, a sus hijas o hijos, o a otro familiar?", critical:true},
+    {t:"¿Tiene la persona agresora acceso a armas de fuego u otro tipo de arma?", critical:true},
+    {t:"¿Alguna vez la ha golpeado, ahorcado o intentado asfixiarla?", critical:true},
+    {t:"¿La ha agredido físicamente durante algún embarazo?", critical:false},
+    {t:"¿La persona agresora consume alcohol o drogas con frecuencia?", critical:false},
+    {t:"¿Ha incumplido medidas de protección o resoluciones judiciales dictadas anteriormente?", critical:true},
+    {t:"¿La vigila, sigue o controla constantemente (llamadas, redes sociales, ubicación, salidas)?", critical:false},
+    {t:"¿Ha amenazado con quitarse la vida o hacerse daño si usted termina la relación?", critical:false},
+    {t:"¿Se ha vuelto más violenta cuando usted ha intentado terminar la relación o separarse?", critical:false},
+    {t:"¿Vive actualmente con la persona agresora o tiene contacto frecuente con ella?", critical:false},
+    {t:"¿Tiene antecedentes de violencia con otras parejas o denuncias previas por hechos similares?", critical:false},
+    {t:"¿Siente temor de que la persona agresora pueda matarla a usted o a un familiar?", critical:true},
+    {t:"¿Cuenta con alguna persona de confianza o un lugar seguro al que acudir en caso de emergencia?", protective:true}
+  ];
+  var current = 0;
+  var answers = [];
+
+  function startQuiz(){
+    current = 0; answers = [];
+    document.getElementById('quizIntro').style.display='none';
+    document.getElementById('quizResult').style.display='none';
+    document.getElementById('quizBody').style.display='block';
+    renderQuestion();
+  }
+  function renderQuestion(){
+    document.getElementById('qtext').textContent = questions[current].t;
+    document.getElementById('progressLabel').textContent = 'Pregunta ' + (current+1) + ' de ' + questions.length;
+    document.getElementById('progressFill').style.width = (current/questions.length*100) + '%';
+  }
+  function answer(val){
+    answers[current] = val;
+    if(current < questions.length - 1){ current++; renderQuestion(); }
+    else{ showResult(); }
+  }
+  function prevQuestion(){
+    if(document.getElementById('quizBody').style.display === 'none') return;
+    if(current > 0){ current--; renderQuestion(); }
+    else{
+      document.getElementById('quizBody').style.display='none';
+      document.getElementById('quizIntro').style.display='block';
+    }
+  }
+  function showResult(){
+    document.getElementById('quizBody').style.display='none';
+    document.getElementById('quizResult').style.display='block';
+    var riskPoints = 0, criticalHit = false;
+    questions.forEach(function(q, i){
+      var isRisk = q.protective ? (answers[i] === false) : (answers[i] === true);
+      if(isRisk){ riskPoints++; if(q.critical) criticalHit = true; }
+    });
+    var alto = criticalHit || riskPoints >= 4;
+    var badge = document.getElementById('resultBadge');
+    if(alto){
+      badge.className = 'result-badge alto'; badge.textContent = 'Riesgo alto';
+      document.getElementById('resultTitle').textContent = 'Sus respuestas muestran señales importantes de riesgo';
+      document.getElementById('resultText').textContent = 'Este resultado no significa que puedas predecir lo que sucederá ni sustituye la valoración realizada por las autoridades o profesionales correspondientes. Sin embargo, es una señal para tomar tu situación con seriedad.';
+    }else{
+      badge.className = 'result-badge leve'; badge.textContent = 'Riesgo leve';
+      document.getElementById('resultTitle').textContent = 'No se identificaron señales de riesgo crítico';
+      document.getElementById('resultText').textContent = 'Esto no significa que la situación sea segura ni que la violencia deba ser ignorada. El nivel de riesgo puede cambiar con el tiempo y esta autoevaluación no sustituye la valoración de las autoridades o profesionales correspondientes.';
+    }
+  }
+</script>
+</body>
+</html>
