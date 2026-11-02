@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#245A64">
+<title>Ruta Segura — Guía para tu proceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F8FAFA; --bg-elev:#FFFFFF; --ink:#263238; --ink-soft:#5C6D72;
+    --brand:#245A64; --brand-strong:#163C43; --brand-soft:#E8F3F5;
+    --gold:#D99A32; --border:#D7E2E5;
+    --alert-bg:#F5E4E3; --alert-ink:#B85C5C;
+    --safe-bg:#E7F2EF; --safe-ink:#3F7767;
+    --warn-bg:#F7ECD9; --warn-ink:#8F6516;
+    --hdr1:#2C6D79; --hdr2:#163C43;
+    --focus:#245A64; --shadow:0 10px 28px rgba(22,60,67,.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121C1F; --bg-elev:#1B282C; --ink:#E7EDEE; --ink-soft:#A9BABE;
+      --brand:#6FB6C2; --brand-strong:#9AD2DC; --brand-soft:#1E363B;
+      --gold:#E6B35C; --border:#324347;
+      --alert-bg:#3B2422; --alert-ink:#E08C8C;
+      --safe-bg:#1E332E; --safe-ink:#7FC2AC;
+      --warn-bg:#3A2E1C; --warn-ink:#E6B35C;
+      --hdr1:#1F4A53; --hdr2:#10262B;
+      --focus:#6FB6C2; --shadow:0 10px 28px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121C1F; --bg-elev:#1B282C; --ink:#E7EDEE; --ink-soft:#A9BABE;
+    --brand:#6FB6C2; --brand-strong:#9AD2DC; --brand-soft:#1E363B;
+    --gold:#E6B35C; --border:#324347;
+    --alert-bg:#3B2422; --alert-ink:#E08C8C;
+    --safe-bg:#1E332E; --safe-ink:#7FC2AC;
+    --warn-bg:#3A2E1C; --warn-ink:#E6B35C;
+    --hdr1:#1F4A53; --hdr2:#10262B;
+    --focus:#6FB6C2; --shadow:0 10px 28px rgba(0,0,0,.45);
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight:400; font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:inherit; font-weight:700; color:var(--ink); line-height:1.25; margin:0 0 .5rem; }
+  p{ margin:0 0 .9rem; color:var(--ink-soft); max-width:64ch; }
+  a{ color:var(--brand); }
+  button{ font-family:inherit; }
+  :focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+  .i{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+  /* ---------- logo slots ---------- */
+  .slot{ position:relative; display:grid; place-items:center; overflow:hidden; background:var(--brand-soft); border:1px dashed var(--border); color:var(--ink-soft); }
+  .slot::before{ content:"Logo"; font-size:.56rem; font-weight:600; }
+  .slot.ok{ background:#fff; border-color:transparent; }
+  .slot.ok::before{ display:none; }
+  .slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; padding:3px; display:block; }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:30; color:#fff;
+    background:linear-gradient(135deg,var(--hdr1),var(--hdr2));
+    padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 14px;
+    display:flex; align-items:center; gap:12px;
+    box-shadow:0 4px 16px rgba(22,60,67,.25);
+  }
+  header .mark{ width:38px; height:38px; flex-shrink:0; }
+  header .titles{ flex:1; min-width:0; }
+  header h1{ font-size:1.2rem; margin:0; font-weight:800; color:#fff; letter-spacing:-.01em; }
+  header .sub{ font-size:.74rem; color:rgba(255,255,255,.82); margin-top:1px; }
+  header .logos{ display:flex; gap:6px; flex-shrink:0; }
+  header .logo-uni{ width:36px; height:36px; border-radius:11px; }
+  @media (max-width:360px){ header .mark{ display:none; } header .logo-uni{ width:32px; height:32px; } }
+
+  .faq-strip{
+    display:flex; align-items:center; gap:12px; width:calc(100% - 32px); max-width:608px; margin:14px auto 0;
+    background:var(--bg-elev); color:var(--brand-strong);
+    padding:11px 14px; font-size:.9rem; font-weight:600; text-align:left;
+    border:1px solid var(--border); border-radius:16px; cursor:pointer;
+  }
+  .faq-strip .ico{ width:32px; height:32px; border-radius:10px; background:var(--brand-soft); color:var(--brand); display:grid; place-items:center; }
+  .faq-strip .arrow{ margin-left:auto; color:var(--ink-soft); }
+
+  .top-actions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; width:calc(100% - 32px); max-width:608px; margin:14px auto 0; }
+  .top-actions .faq-strip{ width:auto; max-width:none; margin:0; padding:10px 11px; gap:9px; font-size:.84rem; line-height:1.15; }
+  .top-actions .faq-strip .arrow{ display:none; }
+  .faq-strip .ico{ flex-shrink:0; position:relative; overflow:hidden; }
+  .faq-strip .ico img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; padding:2px; background:#fff; display:block; }
+  .faq-strip .ico.ok svg{ display:none; }
+  .faq-strip.panic{ color:#8F2E2E; border-color:#E6C4C4; }
+  .faq-strip.panic .ico{ background:#FBE9E9; color:#B23A3A; }
+  .panic-steps{ text-align:left; font-size:.86rem; margin:0 auto 14px; padding-left:18px; }
+  .panic-steps li{ margin-bottom:5px; }
+  .store-btn{ display:block; text-decoration:none; text-align:center; background:var(--brand); color:#fff; border-radius:14px; padding:13px 14px; font-size:.92rem; font-weight:600; margin-top:8px; }
+  #panicModal .modal{ max-height:88vh; overflow:auto; }
+
+  /* ---------- layout ---------- */
+  main{ padding:18px 16px calc(120px + env(safe-area-inset-bottom,0px)); max-width:640px; margin:0 auto; }
+  .view{ display:none; }
+  .view.active{ display:block; animation:fade .28s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .view.active{ animation:none; } *{ transition:none !important; } }
+
+  .page-head{ display:flex; gap:14px; align-items:flex-start; margin-bottom:16px; }
+  .page-head .chip{ flex:0 0 46px; height:46px; border-radius:15px; background:var(--brand); color:#fff; display:grid; place-items:center; }
+  .page-head .chip .i{ width:24px; height:24px; }
+  .page-head h2{ font-size:1.4rem; margin:0 0 4px; }
+  .page-head p{ margin:0; font-size:.93rem; }
+  .sec-title{ font-size:1.08rem; margin:28px 0 10px; }
+
+  /* hero (información) */
+  .hero{
+    position:relative; overflow:hidden; border-radius:24px; padding:22px 20px 8px;
+    background:linear-gradient(160deg,var(--brand-soft),var(--bg-elev)); border:1px solid var(--border);
+  }
+  .hero h2{ font-size:1.5rem; max-width:15ch; position:relative; }
+  .hero p{ position:relative; font-size:.95rem; }
+  .hero-art{ position:absolute; right:-34px; top:-34px; width:170px; height:170px; color:var(--brand); opacity:.55; }
+  .promise{
+    display:flex; align-items:center; gap:14px; background:var(--safe-bg); color:var(--safe-ink);
+    border-radius:20px; padding:16px 18px; font-weight:700; font-size:.98rem; margin:16px 0;
+  }
+  .promise .i{ width:30px; height:30px; }
+
+  /* violence types */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .tile{ position:relative; overflow:hidden; background:var(--bg-elev); border:1px solid var(--border); border-radius:18px; padding:14px; }
+  .tile::before{ content:""; position:absolute; left:0; right:0; top:0; height:4px; background:var(--acc,var(--brand)); }
+  .tile-img{ aspect-ratio:4/3; border-radius:12px; margin:4px 0 10px; }
+  .tile-img img{ padding:0; object-fit:cover; }
+  .tile .lbl{ font-weight:700; color:var(--brand-strong); display:block; margin-bottom:4px; }
+  .tile p{ font-size:.86rem; margin:0; }
+
+  /* cycle */
+  .cycle-fig{ display:flex; justify-content:center; margin:10px 0 18px; padding:14px; background:var(--bg-elev); border:1px solid var(--border); border-radius:22px; }
+  .cycle-fig svg{ width:100%; max-width:300px; height:auto; }
+  .cy-ring{ fill:none; stroke-width:14; stroke-linecap:round; }
+  .cy-node{ fill:var(--bg-elev); stroke-width:3; }
+  .cy-num{ fill:var(--ink); font-weight:700; font-size:15px; text-anchor:middle; dominant-baseline:central; font-family:inherit; }
+  .cy-lbl{ fill:var(--ink); font-weight:600; font-size:10.5px; text-anchor:middle; font-family:inherit; }
+  .c1{ stroke:var(--gold); } .c1f{ fill:var(--gold); }
+  .c2{ stroke:var(--alert-ink); } .c2f{ fill:var(--alert-ink); }
+  .c3{ stroke:var(--brand); } .c3f{ fill:var(--brand); }
+  .card{ background:var(--bg-elev); border:1px solid var(--border); border-radius:18px; padding:16px 18px; margin-bottom:12px; }
+  .phase{ border:none; color:var(--pt); }
+  .phase.p1{ background:var(--gold); --pt:#1F2A2E; }
+  .phase.p2{ background:var(--alert-ink); --pt:#FFFFFF; }
+  .phase.p3{ background:var(--brand); --pt:#FFFFFF; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .phase.p2, :root:not([data-theme="light"]) .phase.p3{ --pt:#10191B; } }
+  :root[data-theme="dark"] .phase.p2, :root[data-theme="dark"] .phase.p3{ --pt:#10191B; }
+  .phase h3, .phase p{ color:var(--pt); }
+  .phase h3{ font-size:1rem; } .phase p{ font-size:.9rem; margin:0; }
+
+  /* emergency */
+  .risk-card{ background:var(--warn-bg); border-radius:22px; padding:18px; margin:26px 0 14px; }
+  .risk-card h3{ display:flex; align-items:center; gap:10px; color:var(--warn-ink); font-size:1.08rem; margin-bottom:2px; }
+  .risk-card > p{ color:var(--warn-ink); font-size:.9rem; margin:0 0 14px; }
+  .risk-nums{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .risk-nums a{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    background:var(--bg-elev); border-radius:16px; padding:12px 14px; text-decoration:none;
+    color:var(--ink-soft); font-size:.74rem; font-weight:600; line-height:1.25;
+  }
+  .risk-nums a:last-child{ grid-column:1 / -1; }
+  .risk-nums a span{ display:block; }
+  .risk-nums a strong{ display:block; color:var(--warn-ink); font-size:1.3rem; font-weight:800; line-height:1.2; }
+  .risk-nums a .i{ color:var(--warn-ink); }
+
+  footer.note{ text-align:center; font-size:.74rem; color:var(--ink-soft); margin-top:26px; }
+
+  /* steps */
+  .steps{ list-style:none; margin:20px 0 0; padding:0; }
+  .steps li{ position:relative; padding:0 0 14px 56px; }
+  .steps li::before{ content:""; position:absolute; left:19px; top:40px; bottom:-4px; width:2px; background:var(--border); }
+  .steps li:last-child::before{ display:none; }
+  .steps .num{
+    position:absolute; left:0; top:0; width:40px; height:40px; border-radius:50%;
+    background:var(--brand); color:#fff; font-weight:800; display:grid; place-items:center; box-shadow:0 0 0 5px var(--bg);
+  }
+  .steps li:last-child .num{ background:var(--safe-ink); }
+  .steps .body{ background:var(--bg-elev); border:1px solid var(--border); border-radius:18px; padding:14px 16px; }
+  .steps h3{ font-size:1rem; margin-bottom:4px; }
+  .steps p{ font-size:.9rem; margin:0; }
+
+  /* institutions */
+  .inst{ display:flex; gap:14px; align-items:flex-start; background:var(--bg-elev); border:1px solid var(--border); border-radius:18px; padding:14px; margin-bottom:10px; }
+  .inst .ic{ flex-shrink:0; width:54px; height:54px; border-radius:14px; }
+  .inst h3{ font-size:.98rem; margin-bottom:2px; }
+  .inst p{ font-size:.86rem; margin:0 0 8px; }
+  .calls{ display:flex; flex-wrap:wrap; gap:8px; }
+  .call{
+    display:inline-flex; align-items:center; gap:7px; background:var(--brand-soft); color:var(--brand-strong);
+    font-weight:700; font-size:.86rem; text-decoration:none; padding:7px 12px; border-radius:999px;
+  }
+  .call .i{ width:15px; height:15px; }
+
+  /* FAQ */
+  .back-link{ display:inline-flex; align-items:center; gap:6px; background:none; border:none; color:var(--ink-soft); font-size:.85rem; font-weight:600; cursor:pointer; padding:0; margin-bottom:14px; }
+  .back-link .i{ width:16px; height:16px; }
+  .faq-cats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+  .faq-cat{
+    background:var(--bg-elev); border:1.5px solid var(--border); border-radius:16px; padding:13px;
+    text-align:left; font-weight:600; font-size:.88rem; line-height:1.3; color:var(--ink); cursor:pointer;
+  }
+  .faq-cat.active{ border-color:var(--brand); background:var(--brand); color:#fff; }
+  .faq-group{ display:none; } .faq-group.active{ display:block; }
+  details.q{ background:var(--bg-elev); border:1px solid var(--border); border-radius:16px; margin-bottom:10px; }
+  details.q summary{ cursor:pointer; padding:14px 16px; font-weight:600; list-style:none; display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+  details.q summary::-webkit-details-marker{ display:none; }
+  details.q summary::after{ content:"+"; font-weight:700; font-size:1.2rem; line-height:1; color:var(--brand); flex-shrink:0; }
+  details.q[open] summary::after{ content:"–"; }
+  details.q .ans{ padding:0 16px 14px; }
+  details.q .ans p{ font-size:.92rem; margin:0 0 .7rem; max-width:none; }
+  details.q .ans ul{ margin:0 0 .7rem; padding-left:1.1rem; color:var(--ink-soft); font-size:.92rem; }
+  details.q .ans li{ margin-bottom:.5rem; }
+
+  /* quiz */
+  .quiz-intro p{ max-width:none; }
+  .facts{ display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 18px; }
+  .fact{ display:inline-flex; align-items:center; gap:7px; background:var(--brand-soft); color:var(--brand-strong); font-weight:600; font-size:.82rem; padding:8px 12px; border-radius:999px; }
+  .fact .i{ width:16px; height:16px; }
+  .primary-btn{
+    display:block; width:100%; text-align:center; background:var(--brand); color:#fff; border:none; border-radius:16px;
+    padding:16px 18px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:8px; box-shadow:0 8px 18px rgba(36,90,100,.25);
+  }
+  .ghost-btn{
+    display:block; width:100%; text-align:center; background:transparent; color:var(--brand-strong);
+    border:1.5px solid var(--border); border-radius:16px; padding:14px 18px; font-size:.95rem; font-weight:600; cursor:pointer; margin-top:10px;
+  }
+  .warn-card{ background:var(--warn-bg); border-radius:22px; padding:20px; margin-bottom:12px; }
+  .warn-card h2{ display:flex; align-items:center; gap:10px; color:var(--warn-ink); font-size:1.15rem; }
+  .warn-card p, .warn-card li{ color:var(--ink); font-size:.92rem; max-width:none; }
+  .warn-card ul{ padding-left:1.1rem; margin:0; }
+  .warn-card li{ margin-bottom:.5rem; }
+  .quiz-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+  .quiz-top .back-link{ margin-bottom:0; text-decoration:underline; }
+  .seg{ display:flex; gap:4px; margin-bottom:16px; }
+  .seg span{ flex:1; height:6px; border-radius:4px; background:var(--border); transition:background .25s ease; }
+  .seg span.done{ background:var(--brand); }
+  .seg span.now{ background:var(--gold); }
+  .q-card{ background:var(--bg-elev); border:1px solid var(--border); border-radius:24px; padding:22px 20px 8px; box-shadow:var(--shadow); min-height:210px; }
+  .q-count{ display:inline-block; background:var(--brand-soft); color:var(--brand-strong); font-weight:700; font-size:.78rem; padding:5px 11px; border-radius:999px; margin-bottom:14px; }
+  .qtext{ font-size:1.22rem; font-weight:600; line-height:1.4; margin:0 0 18px; color:var(--ink); max-width:none; }
+  .answers{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .ans-btn{
+    padding:20px 10px; border-radius:18px; border:2px solid var(--border); background:var(--bg-elev);
+    color:var(--ink); font-weight:600; font-size:1.1rem; cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .ans-btn:active{ border-color:var(--brand); background:var(--brand-soft); }
+  .skip{ display:block; margin:14px auto 0; background:none; border:none; color:var(--ink-soft); font-size:.86rem; font-weight:600; text-decoration:underline; cursor:pointer; padding:8px; }
+  .res-card{ background:var(--bg-elev); border:1px solid var(--border); border-radius:24px; padding:24px 20px 10px; text-align:center; box-shadow:var(--shadow); margin-bottom:6px; }
+  .res-icon{ width:66px; height:66px; border-radius:50%; display:grid; place-items:center; margin:0 auto 12px; }
+  .res-icon .i{ width:32px; height:32px; }
+  .res-icon.alto{ background:var(--alert-bg); color:var(--alert-ink); }
+  .res-icon.leve{ background:var(--safe-bg); color:var(--safe-ink); }
+  .result-badge{ display:inline-block; padding:7px 16px; border-radius:999px; font-weight:800; font-size:.95rem; margin-bottom:12px; }
+  .result-badge.alto{ background:var(--alert-bg); color:var(--alert-ink); }
+  .result-badge.leve{ background:var(--safe-bg); color:var(--safe-ink); }
+  .res-card h2{ font-size:1.2rem; }
+  .res-card p{ font-size:.92rem; margin-left:auto; margin-right:auto; text-align:left; }
+  .res-card .skipped{ font-size:.82rem; font-style:italic; }
+
+  .share-line{ text-align:center; margin:26px 0 0; max-width:none; }
+  .link-btn{ display:inline-flex; align-items:center; gap:8px; background:none; border:none; color:var(--brand); font-weight:600; font-size:.85rem; text-decoration:underline; cursor:pointer; padding:8px; }
+  .link-btn .i{ width:17px; height:17px; }
+
+  /* bottom nav */
+  .dock{ position:fixed; left:0; right:0; bottom:0; z-index:30; padding:0 12px calc(10px + env(safe-area-inset-bottom,0px)); pointer-events:none; }
+  nav.tabs{
+    pointer-events:auto; max-width:520px; margin:0 auto; background:var(--bg-elev); border:1px solid var(--border);
+    border-radius:24px; box-shadow:var(--shadow); display:flex; gap:4px; padding:6px;
+  }
+  nav.tabs button{
+    flex:1; background:none; border:none; color:var(--ink-soft); display:flex; flex-direction:column; align-items:center; gap:4px;
+    font-family:inherit; font-size:.68rem; font-weight:600; line-height:1.1; padding:9px 2px; border-radius:18px; cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  nav.tabs button .i{ width:22px; height:22px; }
+  nav.tabs button.active{ background:var(--brand); color:#fff; }
+
+  /* modal */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(15,20,18,.55); z-index:50; display:none; align-items:center; justify-content:center; padding:24px; }
+  .modal-overlay.open{ display:flex; }
+  .modal{ background:var(--bg-elev); border-radius:24px; padding:24px; max-width:340px; width:100%; text-align:center; box-shadow:var(--shadow); }
+  .modal h3{ margin-bottom:10px; }
+  .modal p{ font-size:.88rem; margin:0 auto 16px; }
+  #qrcode{ display:flex; justify-content:center; margin:0 auto 14px; }
+  #qrcode img, #qrcode canvas{ border-radius:12px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></symbol>
+  <symbol id="i-court" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M2 10l10-6 10 6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 14v3M17 21h4"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+</svg>
+
+<header>
+  <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+    <rect width="32" height="32" rx="10" fill="rgba(255,255,255,.16)"/>
+    <path d="M9 23c0-7 14-4 14-12" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-dasharray="0.1 5"/>
+    <circle cx="9" cy="23" r="2.7" fill="#fff"/>
+    <circle cx="23" cy="10.5" r="3.2" fill="none" stroke="#fff" stroke-width="2"/>
+  </svg>
+  <div class="titles">
+    <h1>Ruta Segura</h1>
+    <div class="sub">Guía informativa para tu proceso</div>
+  </div>
+  <div class="logos">
+    <span class="slot logo-uni"><img src="img/universidad.png" alt="Universidad de San Carlos de Guatemala" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span>
+    <span class="slot logo-uni"><img src="img/cunsurori.png" alt="CUNSURORI" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span>
+    <span class="slot logo-uni"><img src="img/criminalistica.png" alt="Carrera de Criminología y Criminalística" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span>
+  </div>
+</header>
+
+<div class="top-actions">
+  <button type="button" class="faq-strip" onclick="goTo('faq')">
+    <span class="ico"><svg class="i"><use href="#i-help"/></svg></span>
+    <span>Preguntas frecuentes</span>
+  </button>
+  <button type="button" class="faq-strip panic" onclick="openPanic()">
+    <span class="ico"><svg class="i"><use href="#i-alert"/></svg><img src="img/botondepanico.png" alt="" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span>
+    <span>Botón de pánico</span>
+  </button>
+</div>
+
+<main>
+
+  <!-- INFO -->
+  <section class="view active" id="view-info">
+    <div class="hero">
+      <svg class="hero-art" viewBox="0 0 170 170" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="110" cy="60" r="24" stroke-opacity=".7"/>
+          <circle cx="110" cy="60" r="46" stroke-opacity=".5"/>
+          <circle cx="110" cy="60" r="68" stroke-opacity=".3"/>
+          <circle cx="110" cy="60" r="90" stroke-opacity=".18"/>
+        </g>
+      </svg>
+      <h2>¿Qué es la violencia contra la mujer?</h2>
+      <p>En Guatemala, la Ley contra el Femicidio y otras Formas de Violencia Contra la Mujer (Decreto 22-2008) reconoce como violencia cualquier acción u omisión, basada en su género, que le cause muerte, daño o sufrimiento físico, sexual, psicológico o económico, tanto en el ámbito público como en el privado.</p>
+    </div>
+
+    <div class="promise">
+      <svg class="i"><use href="#i-shield"/></svg>
+      <span>Toda mujer tiene derecho a vivir libre de violencia y a recibir orientación y protección.</span>
+    </div>
+
+    <h3 class="sec-title">Formas en las que puede presentarse</h3>
+    <div class="grid2">
+      <div class="tile" style="--acc:var(--alert-ink)">
+        <div class="tile-img slot"><img src="img/fisica.png" alt="Violencia física" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>
+        <span class="lbl">Física</span><p>Golpes, empujones, heridas o cualquier agresión al cuerpo.</p>
+      </div>
+      <div class="tile" style="--acc:var(--gold)">
+        <div class="tile-img slot"><img src="img/psicologica.png" alt="Violencia psicológica" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>
+        <span class="lbl">Psicológica</span><p>Amenazas, humillaciones, control, celos o aislamiento.</p>
+      </div>
+      <div class="tile" style="--acc:var(--brand)">
+        <div class="tile-img slot"><img src="img/sexual.png" alt="Violencia sexual" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>
+        <span class="lbl">Sexual</span><p>Cualquier acto sexual sin su consentimiento.</p>
+      </div>
+      <div class="tile" style="--acc:var(--safe-ink)">
+        <div class="tile-img slot"><img src="img/economica.png" alt="Violencia económica" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>
+        <span class="lbl">Económica</span><p>Controlar su dinero, impedirle trabajar o quitarle sus bienes.</p>
+      </div>
+    </div>
+
+    <h3 class="sec-title">El ciclo de la violencia</h3>
+    <p>Muchas mujeres reconocen este patrón en su relación. Se presenta en tres fases que suelen repetirse:</p>
+    <div class="cycle-fig">
+      <svg viewBox="36 36 248 248" role="img" aria-label="Ciclo de la violencia en tres fases: tensión, agresión y reconciliación">
+        <path class="cy-ring c1" d="M88.1 90.5 A100 100 0 0 1 218.8 79.1"/>
+        <polygon class="c1f" points="230.5,73.0 215.4,91.6 240.9,101.2"/>
+        <path class="cy-ring c2" d="M256.1 132.4 A100 100 0 0 1 200.7 251.4"/>
+        <polygon class="c2f" points="200.1,264.6 191.5,242.2 170.5,259.5"/>
+        <path class="cy-ring c3" d="M135.8 257.0 A100 100 0 0 1 60.5 149.5"/>
+        <polygon class="c3f" points="49.4,142.5 73.1,146.2 68.6,119.3"/>
+        <circle class="cy-node c1" cx="160" cy="60" r="17"/><text class="cy-num" x="160" y="60">1</text>
+        <circle class="cy-node c2" cx="246.6" cy="210" r="17"/><text class="cy-num" x="246.6" y="210">2</text>
+        <circle class="cy-node c3" cx="73.4" cy="210" r="17"/><text class="cy-num" x="73.4" y="210">3</text>
+        <text class="cy-lbl" x="160" y="112">Tensión</text>
+        <text class="cy-lbl" x="205" y="190">Agresión</text>
+        <text class="cy-lbl" x="115" y="190">Reconciliación</text>
+      </svg>
+    </div>
+    <div class="card phase p1">
+      <h3>Fase 1 · Acumulación de tensión</h3>
+      <p>Tu pareja se muestra irritable y tenso sin una razón clara. Te humilla, se burla de ti o te ridiculiza. Sientes miedo e inseguridad, intentas calmar la situación y evitas lo que crees que le molesta, con la esperanza de que pase y de que cambie.</p>
+    </div>
+    <div class="card phase p2">
+      <h3>Fase 2 · Agresión</h3>
+      <p>Se rompe el diálogo y el entendimiento. Tu pareja descarga su enojo con golpes, empujones, pellizcos o palabras ofensivas; puede negarte el dinero para la comida u obligarte a tener relaciones sexuales.</p>
+    </div>
+    <div class="card phase p3">
+      <h3>Fase 3 · Reconciliación</h3>
+      <p>Pasado un tiempo, tu pareja se muestra cariñosa, te pide perdón, demuestra su arrepentimiento y te compensa de distintas formas; promete que no volverá a ocurrir y que va a cambiar. Sientes pena y a veces culpa, pero te ilusiona retomar la relación.</p>
+    </div>
+
+    <div class="risk-card" role="note">
+      <h3><svg class="i"><use href="#i-phone"/></svg>Números de Emergencia</h3>
+      <p>Si tu vida está en peligro, llama de inmediato:</p>
+      <div class="risk-nums">
+        <a href="tel:110"><div><span>PNC</span><strong>110</strong></div><svg class="i"><use href="#i-phone"/></svg></a>
+        <a href="tel:1572"><div><span>Ministerio Público<br>atención a víctimas</span><strong>1572</strong></div><svg class="i"><use href="#i-phone"/></svg></a>
+        <a href="tel:66308755"><div><span>Bomberos Municipales</span><strong>6630-8755</strong></div><svg class="i"><use href="#i-phone"/></svg></a>
+      </div>
+    </div>
+    <footer class="note">Instrumento informativo y de valoración de riesgo, creado como parte del Ejercicio Profesional Supervisado (EPS) de la carrera de Criminología y Criminalística de la Universidad de San Carlos de Guatemala (USAC).</footer>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="view" id="view-proceso">
+    <div class="page-head">
+      <span class="chip"><svg class="i"><use href="#i-flag"/></svg></span>
+      <div>
+        <h2>Su proceso, paso a paso</h2>
+        <p>Esta es una guía general del proceso. Cada caso es distinto: el personal del juzgado le explicará los detalles específicos de su situación.</p>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div class="body"><h3>Juzgado de Paz</h3><p><strong>Solicitud de medidas de seguridad.</strong> Es el primer paso: cuentas tu situación al personal del juzgado y solicitas que se te proteja. Si temes que tus hijas o hijos estén en riesgo, menciónalo para que puedan incluirse en la solicitud.</p></div></li>
+      <li><span class="num">2</span><div class="body"><h3>Medidas de seguridad</h3><p><strong>Se brinda protección y orientación.</strong> El juez puede ordenar medidas para prevenir nuevas agresiones, por ejemplo que el agresor no se acerque a ti. También recibes orientación sobre los pasos que siguen. Estas medidas protegen, pero no significan que el agresor ya fue condenado.</p></div></li>
+      <li><span class="num">3</span><div class="body"><h3>Agencia Fiscal del Ministerio Público</h3><p><strong>Investigación inicial del posible delito.</strong> Tu denuncia llega a la Agencia Fiscal del Ministerio Público de San Raymundo, que inicia la investigación para determinar si hubo un delito y te cita para entrevistarte.</p></div></li>
+      <li><span class="num">4</span><div class="body"><h3>Diligencias de investigación</h3><p><strong>Según cada caso: evaluación del INACIF, médico forense y psicólogo forense.</strong> Se realizan diligencias para reunir información y evidencia. Entre ellas, el INACIF puede evaluarte con un médico forense y un psicólogo forense.</p></div></li>
+      <li><span class="num">5</span><div class="body"><h3>Fiscalía de la Mujer</h3><p><strong>Seguimiento más a fondo de la investigación.</strong> El caso pasa a la Fiscalía de la Mujer del Ministerio Público en San Juan Sacatepéquez, que continúa la investigación con entrevistas, informes y búsqueda de evidencia.</p></div></li>
+      <li><span class="num">6</span><div class="body"><h3>Audiencias judiciales</h3><p>El fiscal presenta los hechos ante el juez. En las audiencias se decide, por ejemplo, si la persona sindicada queda en prisión preventiva o con medidas sustitutivas, y más adelante si se abre el juicio.</p></div></li>
+      <li><span class="num">7</span><div class="body"><h3>Resolución o sentencia</h3><p>El juez dicta sentencia: condenatoria (la persona es culpable del delito) o absolutoria (la persona es inocente de lo que se le acusa). Las partes tienen un plazo legal para apelar; si no lo hacen, la sentencia queda firme.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- INSTITUCIONES -->
+  <section class="view" id="view-instituciones">
+    <div class="page-head">
+      <span class="chip"><svg class="i"><use href="#i-court"/></svg></span>
+      <div>
+        <h2>Instituciones que pueden ayudarte</h2>
+        <p>Conoce las instituciones que pueden orientarte, protegerte y acompañarte durante el proceso.</p>
+      </div>
+    </div>
+
+    <div class="inst"><span class="ic slot"><img src="img/oj.png" alt="Organismo Judicial" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>Juzgado de Paz</h3><p>Dicta las medidas de protección y resuelve el proceso.</p><div class="calls"><a class="call" href="tel:24153400"><svg class="i"><use href="#i-phone"/></svg>2415-3400</a><a class="call" href="tel:22904444"><svg class="i"><use href="#i-phone"/></svg>2290-4444</a></div></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/mp.png" alt="Ministerio Público" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>Ministerio Público — Fiscalía de la Mujer</h3><p>Investiga el delito denunciado.</p><div class="calls"><a class="call" href="tel:1572"><svg class="i"><use href="#i-phone"/></svg>1572</a></div></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/pnc.png" alt="Policía Nacional Civil" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>Policía Nacional Civil (PNC)</h3><p>Recibe denuncias y brinda protección inmediata.</p><div class="calls"><a class="call" href="tel:110"><svg class="i"><use href="#i-phone"/></svg>110</a></div></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/idpp.png" alt="Instituto de la Defensa Pública Penal" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>Instituto de la Defensa Pública Penal</h3><p>Asesoría legal gratuita para la víctima.</p><div class="calls"><a class="call" href="tel:1571"><svg class="i"><use href="#i-phone"/></svg>1571</a></div></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/inacif.png" alt="INACIF" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>INACIF</h3><p style="margin:0">Realiza evaluaciones médicas y psicológicas.</p></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/pdh.png" alt="Procuraduría de los Derechos Humanos" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>PDH — Defensoría de la Mujer</h3><p>Vigila el respeto de sus derechos.</p><div class="calls"><a class="call" href="tel:1555"><svg class="i"><use href="#i-phone"/></svg>1555</a></div></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/pgn.png" alt="Procuraduría General de la Nación" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>PGN</h3><p style="margin:0">Interviene si hay niñas, niños o adolescentes involucrados.</p></div></div>
+    <div class="inst"><span class="ic slot"><img src="img/demi.png" alt="Defensoría de la Mujer Indígena" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></span><div><h3>DEMI</h3><p>Atención a mujeres indígenas en mam, k'iche', q'eqchi' y kaqchikel.</p><div class="calls"><a class="call" href="tel:1529"><svg class="i"><use href="#i-phone"/></svg>1529</a></div></div></div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section class="view" id="view-faq">
+    <button type="button" class="back-link" onclick="goTo('info')"><svg class="i"><use href="#i-left"/></svg>Volver</button>
+    <div class="page-head">
+      <span class="chip"><svg class="i"><use href="#i-help"/></svg></span>
+      <div>
+        <h2>Preguntas frecuentes</h2>
+        <p>Respuestas a dudas comunes sobre la violencia contra la mujer, las medidas de seguridad, la denuncia y el proceso penal.</p>
+      </div>
+    </div>
+
+    <div class="faq-cats">
+      <button type="button" class="faq-cat active" onclick="showFaq(0)">Violencia contra la mujer</button>
+      <button type="button" class="faq-cat" onclick="showFaq(1)">Medidas de seguridad</button>
+      <button type="button" class="faq-cat" onclick="showFaq(2)">La denuncia</button>
+      <button type="button" class="faq-cat" onclick="showFaq(3)">El proceso penal</button>
+    </div>
+
+    <div class="faq-group active">
+      <details class="q"><summary>¿Puedo salir de mi casa sin que mi esposo me acuse de abandono de hogar?</summary><div class="ans"><p>El abandono de hogar ya no se reconoce como causal de divorcio, así que no puede usarse en tu contra cuando hagas valer tus derechos. Por ejemplo, no te impide demandar una pensión alimenticia ni solicitar medidas de seguridad.</p></div></details>
+      <details class="q"><summary>¿Qué pasará con mis hijas e hijos?</summary><div class="ans"><p>Si sales de tu casa por una situación de violencia, se aconseja llevarte a tus hijas e hijos. Al denunciar, es importante mencionar si ellos también son víctimas.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué son las medidas de seguridad?</summary><div class="ans"><p>Son medidas que ordena una autoridad judicial para proteger a una persona que vive violencia o está en riesgo. Buscan prevenir nuevas agresiones y proteger su vida, integridad y seguridad.</p></div></details>
+      <details class="q"><summary>¿Las medidas de seguridad significan que el agresor ya fue condenado?</summary><div class="ans"><p>No. Son preventivas y de protección. Que se otorguen no significa que exista una sentencia condenatoria contra la persona señalada como agresora.</p></div></details>
+      <details class="q"><summary>¿Qué debo hacer después de recibir las medidas de seguridad?</summary><div class="ans"><p>Infórmate sobre los pasos para continuar el procedimiento por los hechos denunciados, sobre todo cuando puedan constituir un delito. Es necesario acudir al Ministerio Público para que continúe la investigación.</p></div></details>
+      <details class="q"><summary>¿Qué pasa si el agresor no respeta las medidas de seguridad?</summary><div class="ans"><p>Avisa de inmediato a la autoridad correspondiente y pide auxilio, especialmente si estás en peligro. Incumplir una medida puede tener consecuencias legales.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué significa poner una denuncia?</summary><div class="ans"><p>Es contar, de forma oral o escrita, a la policía, al Ministerio Público o a un juzgado, que se cometió un delito del que se tiene conocimiento. A partir de ahí se investiga según el tipo de caso, con el fin de apoyar a la víctima e identificar al agresor.</p></div></details>
+      <details class="q"><summary>¿Puedo retirar mi denuncia?</summary><div class="ans"><p>Depende de la naturaleza del delito. En casos de violación sexual o agresiones físicas, aunque retires la denuncia, el Ministerio Público tiene la obligación legal de continuar la persecución penal.</p></div></details>
+      <details class="q"><summary>¿Tiene algún costo?</summary><div class="ans"><p>No. Poner una denuncia no tiene ningún costo.</p></div></details>
+    </div>
+
+    <div class="faq-group">
+      <details class="q"><summary>¿Qué pasa después de solicitar mis medidas?</summary><div class="ans">
+        <p>Después de solicitar tus medidas de seguridad en este juzgado, el camino suele ser el siguiente (los tiempos varían según cada caso):</p>
+        <ul>
+          <li><strong>Agencia Fiscal de San Raymundo.</strong> Tu denuncia llega a la Agencia Fiscal del Ministerio Público del municipio de San Raymundo, que inicia la investigación: te cita para entrevistarte y realiza otras diligencias.</li>
+          <li><strong>Fiscalía de la Mujer.</strong> Luego pasa a la Fiscalía de la Mujer del MP en San Juan Sacatepéquez, que realiza entrevistas, solicita informes y busca evidencia para determinar si existe un delito. La investigación avanza más rápido cuando el agresor ya está identificado.</li>
+          <li><strong>Audiencia ante el juez.</strong> El o la fiscal presenta al juez los hechos que se imputan, y se decide si la persona sindicada queda en prisión preventiva o con medidas sustitutivas (por ejemplo, arresto domiciliario o arraigo) mientras se investiga.</li>
+          <li><strong>Plazo de la investigación.</strong> Es de 3 meses si hay prisión preventiva y de 6 meses si hay arresto domiciliario. Estos plazos pueden cambiar por los recursos que presente la defensa.</li>
+          <li><strong>Etapa intermedia.</strong> Al concluir la investigación, el juez decide si se abre el juicio oral y público (debate).</li>
+          <li><strong>Juicio y sentencia.</strong> El juez dicta sentencia: condenatoria (la persona es culpable del delito) o absolutoria (la persona es inocente de lo que se le acusa).</li>
+          <li><strong>Después de la sentencia.</strong> Las partes tienen un plazo legal para apelar. Si no hay apelación dentro de ese plazo, la sentencia queda firme.</li>
+        </ul>
+      </div></details>
+      <details class="q"><summary>¿Qué pasará con el agresor después de la denuncia?</summary><div class="ans"><p>Después de la denuncia, el Ministerio Público debe realizar una investigación. Durante esa etapa pueden solicitarse medidas de seguridad que garanticen tu bienestar si se considera que estás en riesgo.</p><p>Según la gravedad del delito y el riesgo que enfrentes, el juez puede ordenar la captura del presunto agresor. Mientras el MP investiga, también puede imponer prisión preventiva o arresto domiciliario. Terminada la etapa intermedia, decide si se abre el juicio oral o debate.</p></div></details>
+      <details class="q"><summary>¿Qué significa “reparación digna”?</summary><div class="ans">
+        <p>El Código Procesal Penal reconoce el derecho de la víctima a una reparación digna: restaurar, mediante distintas acciones, el derecho que fue afectado por el delito. Es responsabilidad del Estado y de los agresores brindarla de forma digna y transformadora. Algunos ejemplos:</p>
+        <ul>
+          <li>Recibir tratamiento psicológico y/o médico.</li>
+          <li>Recibir becas de estudio.</li>
+          <li>Pagos a la víctima por parte de la persona condenada.</li>
+          <li>Conmemoraciones públicas por entidades del Estado en casos especiales.</li>
+          <li>Disculpas públicas de la persona condenada.</li>
+          <li>Otras, según las circunstancias del caso.</li>
+        </ul>
+        <p>Cuando la sentencia condenatoria queda firme, el o la fiscal del Ministerio Público debe solicitar al juez la audiencia de reparación digna dentro del plazo que establece la ley.</p>
+      </div></details>
+    </div>
+
+    <p style="font-size:.82rem; margin-top:18px;">Esta información es general. Para tu caso concreto, consulta al personal del juzgado.</p>
+  </section>
+
+  <!-- CUESTIONARIO -->
+  <section class="view" id="view-cuestionario">
+    <div id="quizIntro" class="quiz-intro">
+      <div class="page-head">
+        <span class="chip"><svg class="i"><use href="#i-check"/></svg></span>
+        <div>
+          <h2>Cuestionario de valoración de riesgo</h2>
+          <p>Una guía para conocer tu situación antes de hablar con el personal del juzgado.</p>
+        </div>
+      </div>
+      <div class="facts">
+        <span class="fact"><svg class="i"><use href="#i-list"/></svg>15 preguntas</span>
+        <span class="fact"><svg class="i"><use href="#i-clock"/></svg>Menos de 5 minutos</span>
+        <span class="fact"><svg class="i"><use href="#i-lock"/></svg>Respuestas privadas</span>
+      </div>
+      <p>Este cuestionario es una guía orientativa; no sustituye la valoración de un profesional. Sus respuestas son privadas: no se guardan ni se envían a ningún lugar, solo usted las ve en su teléfono.</p>
+      <p>Responda cada pregunta con <strong>Sí</strong> o <strong>No</strong>; si alguna le incomoda, puede elegir «Prefiero no responder». Al finalizar, si lo desea, puede compartir el resultado con el personal del juzgado.</p>
+      <button type="button" class="primary-btn" onclick="showWarning()">Comenzar cuestionario</button>
+    </div>
+
+    <div id="quizWarning" style="display:none;">
+      <div class="warn-card" role="alert">
+        <h2><svg class="i"><use href="#i-alert"/></svg>Antes de comenzar</h2>
+        <p>Las preguntas que siguen hablan de situaciones de violencia y pueden resultar sensibles o perturbadoras.</p>
+        <ul>
+          <li>Puedes dejar de responder y salir del cuestionario en cualquier momento, sin terminarlo.</li>
+          <li>Responde solo si te sientes en condiciones de hacerlo. Puedes volver cuando quieras.</li>
+          <li>No hay respuestas correctas o incorrectas, y tus respuestas no se guardan ni se envían a ningún lugar.</li>
+        </ul>
+      </div>
+      <button type="button" class="primary-btn" onclick="startQuiz()">Entiendo, continuar</button>
+      <button type="button" class="ghost-btn" onclick="cancelWarning()">Ahora no</button>
+    </div>
+
+    <div id="quizBody" style="display:none;">
+      <div class="quiz-top">
+        <button type="button" class="back-link" onclick="prevQuestion()"><svg class="i"><use href="#i-left"/></svg>Regresar</button>
+        <button type="button" class="back-link" onclick="exitQuiz()">Salir del cuestionario</button>
+      </div>
+      <div class="seg" id="seg" aria-hidden="true"></div>
+      <div class="q-card">
+        <span class="q-count" id="progressLabel"></span>
+        <p class="qtext" id="qtext" aria-live="polite"></p>
+        <div class="answers">
+          <button type="button" class="ans-btn" onclick="answer('si')">Sí</button>
+          <button type="button" class="ans-btn" onclick="answer('no')">No</button>
+        </div>
+        <button type="button" class="skip" onclick="answer('skip')">Prefiero no responder esta pregunta</button>
+      </div>
+    </div>
+
+    <div id="quizResult" style="display:none;">
+      <div class="res-card">
+        <div class="res-icon" id="resIcon"></div>
+        <div id="resultBadge" class="result-badge"></div>
+        <h2 id="resultTitle"></h2>
+        <p id="resultText"></p>
+        <p id="resultSkipped" class="skipped"></p>
+      </div>
+      <button type="button" class="primary-btn" id="resultCta" onclick="goTo('instituciones')">Ver instituciones de ayuda</button>
+      <button type="button" class="ghost-btn" onclick="startQuiz()">Volver a realizar el cuestionario</button>
+    </div>
+  </section>
+
+  <p class="share-line"><button type="button" class="link-btn" id="shareBtn"><svg class="i"><use href="#i-qr"/></svg>Compartir esta guía (código QR)</button></p>
+</main>
+
+<div class="dock">
+<nav class="tabs" aria-label="Secciones">
+  <button type="button" class="tab-btn active" data-view="info" onclick="goTo('info')"><svg class="i"><use href="#i-info"/></svg>Información</button>
+  <button type="button" class="tab-btn" data-view="proceso" onclick="goTo('proceso')"><svg class="i"><use href="#i-flag"/></svg>Su proceso</button>
+  <button type="button" class="tab-btn" data-view="instituciones" onclick="goTo('instituciones')"><svg class="i"><use href="#i-court"/></svg>Instituciones</button>
+  <button type="button" class="tab-btn" data-view="cuestionario" onclick="goTo('cuestionario')"><svg class="i"><use href="#i-check"/></svg>Cuestionario</button>
+</nav>
+</div>
+
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <h3>Compartir esta guía</h3>
+    <p>Pida a la persona que escanee este código con la cámara de su teléfono para abrir la guía directamente.</p>
+    <div id="qrcode"></div>
+    <button type="button" class="ghost-btn" onclick="copyLink()">Copiar enlace</button>
+    <button type="button" class="ghost-btn" onclick="closeShare()">Cerrar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="panicModal" onclick="if(event.target===this)closePanic()">
+  <div class="modal">
+    <h3>Botón de pánico</h3>
+    <p>Es una función de la aplicación <strong>MP Virtual</strong> del Ministerio Público. Si usted se encuentra en peligro, al presionarlo se envía una alerta con su ubicación a las autoridades para que puedan llegar al lugar.</p>
+    <ol class="panic-steps">
+      <li>Descargue la aplicación MP Virtual en su teléfono.</li>
+      <li>Ábrala y busque la opción «Botón de pánico».</li>
+      <li>Si está en peligro, presiónelo.</li>
+    </ol>
+    <p style="font-size:.8rem">Descárguela con anticipación y confirme que la aplicación tenga permiso para usar su ubicación.</p>
+    <a class="store-btn" id="panicStore" href="https://play.google.com/store/apps/details?id=com.mp.mpvirtual.v2" target="_blank" rel="noopener">Descargar MP Virtual (Android)</a>
+    <a class="store-btn" href="https://apps.apple.com/gt/app/mpvirtual/id6450192006" target="_blank" rel="noopener" style="background:#1F3A40">Descargar MP Virtual (iPhone)</a>
+    <button type="button" class="ghost-btn" onclick="closePanic()">Cerrar</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  function goTo(name){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    document.getElementById('view-'+name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.view===name); });
+    window.scrollTo(0,0);
+  }
+  function showFaq(i){
+    document.querySelectorAll('.faq-cat').forEach(function(b,k){ b.classList.toggle('active', k===i); });
+    document.querySelectorAll('.faq-group').forEach(function(g,k){ g.classList.toggle('active', k===i); });
+  }
+
+  // ---------- compartir / QR ----------
+  var qrRendered = false;
+  document.getElementById('shareBtn').addEventListener('click', function(){
+    document.getElementById('shareModal').classList.add('open');
+    if(!qrRendered){
+      try{
+        new QRCode(document.getElementById('qrcode'), { text: window.location.href, width: 200, height: 200, colorDark: '#245A64', colorLight: '#ffffff' });
+        qrRendered = true;
+      }catch(e){ document.getElementById('qrcode').textContent = 'No se pudo generar el código.'; }
+    }
+  });
+  function openPanic(){ document.getElementById('panicModal').classList.add('open'); }
+  function closePanic(){ document.getElementById('panicModal').classList.remove('open'); }
+  function closeShare(){ document.getElementById('shareModal').classList.remove('open'); }
+  function copyLink(){ try{ navigator.clipboard.writeText(window.location.href); }catch(e){} }
+
+  // ---------- cuestionario ----------
+  // critical: una respuesta "Sí" basta para clasificar como riesgo alto.
+  // protective: factor de protección; la respuesta "No" suma como señal de riesgo.
+  var QUESTIONS = [
+    {t:"¿La violencia física ha aumentado en gravedad o en frecuencia durante el último año?"},
+    {t:"¿Él le ha causado daños graves, como un hueso roto, heridas profundas, golpes en el rostro o golpes con objetos peligrosos?", critical:true},
+    {t:"¿Él la ha empujado, jalado del cabello o golpeado?"},
+    {t:"¿Él la ha golpeado estando usted embarazada?"},
+    {t:"¿Él la ha amenazado con matarla o con hacerles daño a sus hijos?", critical:true},
+    {t:"¿Él tiene un arma o podría conseguirla fácilmente?", critical:true},
+    {t:"¿Él la ha amenazado con un arma o la ha usado en su contra?", critical:true},
+    {t:"¿Él la ha obligado a tener relaciones sexuales cuando usted no quería?"},
+    {t:"¿Él controla la mayoría de sus actividades, sus amistades o el dinero que usted puede usar?"},
+    {t:"¿Él ha incumplido antes una medida de seguridad u orden de alejamiento a favor de usted?", critical:true},
+    {t:"¿Antes ha denunciado a esta persona o ha solicitado medidas de seguridad en su contra?"},
+    {t:"¿Usted se siente con miedo, nerviosa o ansiosa cuando está con él?"},
+    {t:"¿Tiene una persona de confianza o un lugar seguro adonde pueda ir si lo necesita?", protective:true},
+    {t:"¿Alguien (él, su familia o la de él) la ha presionado para que retire la denuncia o no continúe con el proceso?"},
+    {t:"¿Teme que la violencia aumente si continúa con la denuncia o con el proceso penal?"}
+  ];
+  var HIGH_THRESHOLD = 5; // señales de riesgo necesarias para "riesgo alto" si no hay respuestas críticas
+  var current = 0;
+  var answers = [];
+
+  function showWarning(){
+    document.getElementById('quizIntro').style.display='none';
+    document.getElementById('quizWarning').style.display='block';
+    window.scrollTo(0,0);
+  }
+  function cancelWarning(){
+    document.getElementById('quizWarning').style.display='none';
+    document.getElementById('quizIntro').style.display='block';
+  }
+  function exitQuiz(){
+    current = 0; answers = [];
+    ['quizBody','quizResult','quizWarning'].forEach(function(id){ document.getElementById(id).style.display='none'; });
+    document.getElementById('quizIntro').style.display='block';
+    goTo('info');
+  }
+  function buildSegments(){
+    var seg = document.getElementById('seg');
+    seg.innerHTML = '';
+    QUESTIONS.forEach(function(){ seg.appendChild(document.createElement('span')); });
+  }
+  function startQuiz(){
+    current = 0; answers = [];
+    document.getElementById('quizIntro').style.display='none';
+    document.getElementById('quizWarning').style.display='none';
+    document.getElementById('quizResult').style.display='none';
+    document.getElementById('quizBody').style.display='block';
+    buildSegments();
+    renderQuestion();
+    window.scrollTo(0,0);
+  }
+  function renderQuestion(){
+    document.getElementById('qtext').textContent = QUESTIONS[current].t;
+    document.getElementById('progressLabel').textContent = 'Pregunta ' + (current+1) + ' de ' + QUESTIONS.length;
+    document.querySelectorAll('#seg span').forEach(function(s,i){
+      s.className = i < current ? 'done' : (i === current ? 'now' : '');
+    });
+  }
+  function answer(val){
+    answers[current] = val;
+    if(current < QUESTIONS.length - 1){ current++; renderQuestion(); }
+    else{ showResult(); }
+  }
+  function prevQuestion(){
+    if(document.getElementById('quizBody').style.display === 'none') return;
+    if(current > 0){ current--; renderQuestion(); }
+    else{
+      document.getElementById('quizBody').style.display='none';
+      document.getElementById('quizIntro').style.display='block';
+    }
+  }
+  function iconSvg(id){ return '<svg class="i"><use href="#'+id+'"/></svg>'; }
+  function showResult(){
+    document.getElementById('quizBody').style.display='none';
+    document.getElementById('quizResult').style.display='block';
+    var riskPoints = 0, criticalHit = false, skipped = 0;
+    QUESTIONS.forEach(function(q, i){
+      if(answers[i] === 'skip' || answers[i] === undefined){ skipped++; return; }
+      var isRisk = q.protective ? (answers[i] === 'no') : (answers[i] === 'si');
+      if(isRisk){ riskPoints++; if(q.critical) criticalHit = true; }
+    });
+    var alto = criticalHit || riskPoints >= HIGH_THRESHOLD;
+    var badge = document.getElementById('resultBadge');
+    var icon = document.getElementById('resIcon');
+    if(alto){
+      icon.className = 'res-icon alto'; icon.innerHTML = iconSvg('i-alert');
+      badge.className = 'result-badge alto'; badge.textContent = 'Riesgo alto';
+      document.getElementById('resultTitle').textContent = 'Sus respuestas muestran señales importantes de riesgo';
+      document.getElementById('resultText').textContent = 'Este resultado no significa que puedas predecir lo que sucederá ni sustituye la valoración realizada por las autoridades o profesionales correspondientes. Sin embargo, es una señal para tomar tu situación con seriedad.';
+    }else{
+      icon.className = 'res-icon leve'; icon.innerHTML = iconSvg('i-info');
+      badge.className = 'result-badge leve'; badge.textContent = 'Riesgo leve';
+      document.getElementById('resultTitle').textContent = 'No se identificaron señales de riesgo crítico';
+      document.getElementById('resultText').textContent = 'Esto no significa que la situación sea segura ni que la violencia deba ser ignorada. El nivel de riesgo puede cambiar con el tiempo y esta autoevaluación no sustituye la valoración de las autoridades o profesionales correspondientes.';
+    }
+    document.getElementById('resultSkipped').textContent = skipped > 0
+      ? 'Usted eligió no responder ' + skipped + (skipped === 1 ? ' pregunta' : ' preguntas') + '; por eso este resultado puede no reflejar toda su situación.'
+      : '';
+    window.scrollTo(0,0);
+  }
+</script>
+</body>
+</html>
